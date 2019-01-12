@@ -11,6 +11,7 @@ public class Livro
     private Genero genero;
     private ArrayList<Genero> generos;
     private Autor autor;
+    private ArrayList<Copia> copias;
     
     //Construtores---------------------------------------------------------------------------------------------------------
     
@@ -22,9 +23,10 @@ public class Livro
         this.genero = null;
         this.generos = null;
         this.autor = null;
+        this.copias = null;
     }
     
-    public Livro(String nome, String resumo, LocalDate data, Genero genero, ArrayList<Genero> generos, Autor autor)
+    public Livro(String nome, String resumo, LocalDate data, Genero genero, ArrayList<Genero> generos, Autor autor, ArrayList<Copia> copias)
     {
         this.nome = nome;
         this.resumo = resumo;
@@ -32,6 +34,7 @@ public class Livro
         this.genero = genero;
         this.generos = generos;
         this.autor = autor;
+        this.copias = copias;
     }
     
     public Livro(Livro livro)
@@ -42,6 +45,7 @@ public class Livro
         this.genero = livro.getGenero();
         this.generos = livro.getGeneros();
         this.autor = livro.getAutor();
+        this.copias = livro.getCopias();
     }
     
     //Gets---------------------------------------------------------------------------------------------------------
@@ -69,7 +73,7 @@ public class Livro
     public ArrayList<Genero> getGeneros()
     {
         ArrayList<Genero> generos = new ArrayList<Genero>();
-        for(Genero genero : generos)
+        for(Genero genero : this.generos)
             generos.add(genero.clone());
         return generos;
     }
@@ -77,6 +81,14 @@ public class Livro
     public Autor getAutor()
     {
         return this.autor.clone();
+    }
+    
+    public ArrayList<Copia> getCopias()
+    {
+        ArrayList<Copia> copias = new ArrayList<Copia>();
+        for(Copia copia : this.copias)
+            copias.add(copia.clone());
+        return copias;
     }
     
     //Sets---------------------------------------------------------------------------------------------------------
@@ -109,6 +121,11 @@ public class Livro
     public void setAutor(Autor autor)
     {
         this.autor = autor;
+    }
+    
+    public void setCopias(ArrayList<Copia> copias)
+    {
+        this.copias = copias;
     }
     
     //Clone---------------------------------------------------------------------------------------------------------
