@@ -49,6 +49,6 @@ public class LivroDAO extends DAO {
             p.close();
         }
 
-        return cliente;
+        return livro;
     }
 }
