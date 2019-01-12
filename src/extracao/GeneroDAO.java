@@ -31,7 +31,7 @@ public class GeneroDAO extends DAO {
     public Genero get(int id) throws SQLException {
         Genero genero = null;
 
-        // get nome, naturalidade, data nascimento e sexo;
+        // get Designação e descrição
         PreparedStatement p = this.connection.prepareStatement("select * from biblioteca.genero where Id = ?;");
         ResultSet r = null;
         p.setInt(1, id);
