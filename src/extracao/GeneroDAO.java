@@ -6,9 +6,9 @@ import transformacao.*;
 import java.sql.*;
 
 
-public class AutorDAO extends DAO {
+public class GeneroDAO extends DAO {
 
-    public AutorDAO(Connection c) {
+    public GeneroDAO(Connection c) {
         super(c);
     }
 
@@ -16,7 +16,7 @@ public class AutorDAO extends DAO {
         HashSet<Integer> r = new HashSet<>();
 
         Statement s = this.connection.createStatement();
-        ResultSet rs = s.executeQuery("select Id from biblioteca.autor;");
+        ResultSet rs = s.executeQuery("select Id from biblioteca.genero;");
 
         while (rs.next()) {
             r.add(rs.getInt("Id"));
@@ -28,28 +28,26 @@ public class AutorDAO extends DAO {
         return r;
     }
 
-    public Autor get(int id) throws SQLException {
-        Autor autor = null;
+    public Genero get(int id) throws SQLException {
+        Genero genero = null;
 
         // get nome, naturalidade, data nascimento e sexo;
-        PreparedStatement p = this.connection.prepareStatement("select * from biblioteca.autor where Id = ?;");
+        PreparedStatement p = this.connection.prepareStatement("select * from biblioteca.genero where Id = ?;");
         ResultSet r = null;
         p.setInt(1, id);
         try {
             r = p.executeQuery();
             if (r.next()) {
-                autor = new Autor(r.getNome("Nome"),
-                                  r.getNat("Naturalidade"),
-                                  r.getNasc("DataNascimento").toLocalDate(),
-                                  r.getSexo("Sexo"));
+                genero = new Genero(r.getDesig("Designacao"),
+                                    r.getDesc("Descricao"));
             } else {
-                throw new SQLException("biblioteca.autor is empty.");
+                throw new SQLException("biblioteca.genero is empty.");
             }
         } finally {
             if (r != null) r.close();
             p.close();
         }
 
-        return autor;
+        return genero;
     }
 }

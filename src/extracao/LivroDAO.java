@@ -38,9 +38,9 @@ public class LivroDAO extends DAO {
         try {
             r = p.executeQuery();
             if (r.next()) {
-                livro = new Livro(r.getNome("Titulo"),
+                livro = new Livro(r.getNome("Titulo"), //TODO Falta passar os parametros genero, generos, autor e copias
                                   r.getResumo("Resumo"),
-                                  r.getDataPublicacao("DataPublicacao").toLocalDateTime());
+                                  r.getData("DataPublicacao").toLocalDate());
             } else {
                 throw new SQLException("biblioteca.livro is empty.");
             }
