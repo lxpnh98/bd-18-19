@@ -31,7 +31,7 @@ public class LivroDAO extends DAO {
     public Livro get(int id) throws SQLException {
         Livro livro = null;
 
-        // get nome, resumo e data
+        // get nome, resumo e data;
         PreparedStatement p = this.connection.prepareStatement("select * from biblioteca.livro where Id = ?;");
         ResultSet r = null;
         p.setInt(1, id);
@@ -40,7 +40,7 @@ public class LivroDAO extends DAO {
             if (r.next()) {
                 livro = new Livro(r.getNome("Titulo"),
                                   r.getResumo("Resumo"),
-                                  r.getTimestamp("DataPublicacao").toLocalDateTime());
+                                  r.getDataPublicacao("DataPublicacao").toLocalDateTime());
             } else {
                 throw new SQLException("biblioteca.livro is empty.");
             }
