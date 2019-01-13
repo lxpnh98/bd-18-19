@@ -1,6 +1,9 @@
 package transformacao;
 
-public class Copia
+import java.util.ArrayList;
+import java.time.LocalDate;
+
+public class Copia extends Livro
 {
     private int id;
     private String estado;
@@ -11,14 +14,16 @@ public class Copia
     
     public Copia()
     {
+        super();
         this.id = -1;
         this.estado = null;
         this.req = false;
         this.edicao = 0;
     }
     
-    public Copia(int id, String estado, boolean req, int edicao)
+    public Copia(int id, String estado, boolean req, int edicao, String nome, String resumo, LocalDate data, Genero genero, ArrayList<Genero> generos, Autor autor, ArrayList<Copia> copias)
     {
+        super(nome, resumo, data, genero, generos, autor, copias);
         this.id = id;
         this.estado = estado;
         this.req = req;
@@ -27,6 +32,7 @@ public class Copia
     
     public Copia(Copia copia)
     {
+        super((Livro) copia);
         this.id = copia.getId();
         this.estado = copia.getEstado();
         this.req = copia.getReq();

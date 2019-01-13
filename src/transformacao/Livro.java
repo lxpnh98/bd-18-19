@@ -1,9 +1,9 @@
 package transformacao;
 
-import java.util.*;
+import java.util.ArrayList;
 import java.time.LocalDate;
-//Autor e Cópia
-public class Livro
+
+public abstract class Livro
 {
     private String nome;
     private String resumo;
@@ -128,10 +128,10 @@ public class Livro
         this.copias = copias;
     }
     
-    //Clone---------------------------------------------------------------------------------------------------------
+    /*//Clone---------------------------------------------------------------------------------------------------------
     
     public Livro clone()
     {
         return new Livro(this);
-    }
+    }*/
 }
