@@ -23,6 +23,16 @@ set f = funcionarios,
 	f.Id = toInteger(funcionarios.Id);
 
 LOAD CSV WITH HEADERS FROM "file:///livro.csv" AS livros
+
+CREATE (c:Copia)
+SET c.Id = toInteger(livros.Id),
+	c.Edicao = toInteger(livros.Edicao),
+    c.Estado = toInteger(livros.Estado),
+    c.Requisitado = case livros.Requisitado when "1" then true else false end,
+    c.Titulo = livros.Titulo,
+    c.Resumo = livros.Resumo
+
+
 WITH COLLECT(livros)[0] AS hardLivro, livros.Titulo AS lTitulo, livros.Resumo AS lResumo
 CREATE (l:Livro)
 SET l.Id = toInteger(hardLivro.Id),
@@ -30,13 +40,6 @@ SET l.Id = toInteger(hardLivro.Id),
     l.Resumo = hardLivro.Resumo,
     l.DataPublicacao = date(hardLivro.DataPublicacao),
 	l.IdGenero = toInteger(hardLivro.IdGenero);
-
-LOAD CSV WITH HEADERS FROM "file:///livro.csv" AS livros
-CREATE (c:Copia)
-SET c.Id = toInteger(livros.Id),
-	c.Edicao = toInteger(livros.Edicao),
-    c.Estado = toInteger(livros.Estado),
-    c.Requisitado = case livros.Requisitado when "1" then true else false end;
 
 LOAD CSV WITH HEADERS FROM "file:///autor.csv" AS autores
 CREATE (a:Autor)
@@ -57,7 +60,7 @@ SET s.Numero = toInteger(salas.Numero),
 LOAD CSV WITH HEADERS FROM "file:///requisicaodesala.csv" AS reqsSala
 CREATE (rs:RequisicaoDeSala)
 SET rs.Id = toInteger(reqsSala.Id),
-	rs.DataRequisicao = (datetime(replace(reqsSala.DataRequisicao," ", "T")),
+	rs.DataRequisicao = datetime(replace(reqsSala.DataRequisicao," ", "T")),
     rs.DataLimite = datetime(replace(reqsSala.DataLimite," ", "T")),
     rs.NumeroSala = toInteger(reqsSala.NumeroSala),
     rs.IdUtilizador = toInteger(reqsSala.IdUtilizador);
@@ -96,13 +99,13 @@ MATCH (rl:RequisicaoDeLivro),(u:Utilizador) WHERE rl.IdUtilizador = u.Id CREATE 
 
 MATCH (l:Livro),(g:Genero) WHERE l.IdGenero = g.Id CREATE (l)-[:GENERO_PRIMARIO]->(g) REMOVE l.IdGenero;
 
-Match (c:Copia),(l:Livro) WHERE c.Titulo = l.Titulo AND c.Resumo = l.Resumo CREATE (c)-[r:COPIA]->(l);
+Match (c:Copia),(l:Livro) where c.Resumo = l.Resumo and c.Titulo = l.Resumo create (c)-[:COPIA]->(l) remove c.Titulo, c.Resumo;
 
 //LIGAR UTILIZADOR E SALA REQUISITADA DIRETAMENTE ATRAVES DE UMA RELACAO COM AS PROPRIADADES DA, AGORA APAGADA, TABALE RequisicaoDeSala
 MATCH (u:Utilizador),(rs:RequisicaoDeSala),(s:Sala)
 WHERE u.Id = rs.IdUtilizador AND rs.NumeroSala = s.Numero
 CREATE (u)-[r:REQUISITOU]->(s)
 SET r.Id = rs.Id,
-	r.DataRequisicao = datetime(replace(rs.DataRequisicao," ", "T")),
-    r.DataLimite = datetime(replace(rs.DataLimite," ", "T"))
+	r.DataRequisicao = rs.DataRequisicao,
+    r.DataLimite = rs.DataLimite
 DETACH DELETE rs;
