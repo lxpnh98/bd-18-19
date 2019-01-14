@@ -96,7 +96,8 @@ MATCH (rl:RequisicaoDeLivro),(u:Utilizador) WHERE rl.IdUtilizador = u.Id CREATE 
 
 MATCH (l:Livro),(g:Genero) WHERE l.IdGenero = g.Id CREATE (l)-[:GENERO_PRIMARIO]->(g) REMOVE l.IdGenero;
 
-Match (c:Copia),(l:Livro) where c.Id = l.Id create (c)-[r:COPIA]->(l);
+Match (c:Copia),(l:Livro) WHERE c.Titulo = l.Titulo AND c.Resumo = l.Resumo CREATE (c)-[r:COPIA]->(l);
+
 //LIGAR UTILIZADOR E SALA REQUISITADA DIRETAMENTE ATRAVES DE UMA RELACAO COM AS PROPRIADADES DA, AGORA APAGADA, TABALE RequisicaoDeSala
 MATCH (u:Utilizador),(rs:RequisicaoDeSala),(s:Sala)
 WHERE u.Id = rs.IdUtilizador AND rs.NumeroSala = s.Numero
