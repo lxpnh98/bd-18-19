@@ -57,8 +57,8 @@ SET s.Numero = toInteger(salas.Numero),
 LOAD CSV WITH HEADERS FROM "file:///requisicaodesala.csv" AS reqsSala
 CREATE (rs:RequisicaoDeSala)
 SET rs.Id = toInteger(reqsSala.Id),
-	rs.DataRequisicao = datetime(datetime(replace(reqsSala.DataRequisicao," ", "T"))),
-    rs.DataLimite = datetime(datetime(replace(reqsSala.DataLimite," ", "T"))),
+	rs.DataRequisicao = (datetime(replace(reqsSala.DataRequisicao," ", "T")),
+    rs.DataLimite = datetime(replace(reqsSala.DataLimite," ", "T")),
     rs.NumeroSala = toInteger(reqsSala.NumeroSala),
     rs.IdUtilizador = toInteger(reqsSala.IdUtilizador);
 
@@ -102,7 +102,7 @@ Match (c:Copia),(l:Livro) WHERE c.Titulo = l.Titulo AND c.Resumo = l.Resumo CREA
 MATCH (u:Utilizador),(rs:RequisicaoDeSala),(s:Sala)
 WHERE u.Id = rs.IdUtilizador AND rs.NumeroSala = s.Numero
 CREATE (u)-[r:REQUISITOU]->(s)
-SET r.Id = rs.id,
-	r.dataRequisicao = rs.dataRequisicao,
-    r.DataLimite = rs.DataLimite
+SET r.Id = rs.Id,
+	r.DataRequisicao = datetime(replace(rs.DataRequisicao," ", "T")),
+    r.DataLimite = datetime(replace(rs.DataLimite," ", "T"))
 DETACH DELETE rs;
