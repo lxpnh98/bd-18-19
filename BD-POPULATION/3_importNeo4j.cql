@@ -85,9 +85,9 @@ WHERE g.Id = toInteger(generolivros.IdGenero) AND l.Id = toInteger(generolivros.
 CREATE (l)-[:TEM_GENERO_SECUNDARIO]->(g);
 
 LOAD CSV WITH HEADERS FROM "file:///requisicaodelivrolivro.csv" AS reqDeLivroLivros
-MATCH (rl:RequisicaoDeLivro), (l:Livro)
-WHERE rl.Id = toInteger(reqDeLivroLivros.IdRequisicaoDeLivro) AND l.Id = toInteger(reqDeLivroLivros.IdLivro)
-CREATE (rl)-[:REQUISITA]->(l);
+MATCH (rl:RequisicaoDeLivro), (c:Copia)
+WHERE rl.Id = toInteger(reqDeLivroLivros.IdRequisicaoDeLivro) AND c.Id = toInteger(reqDeLivroLivros.IdLivro)
+CREATE (rl)-[:REQUISITA]->(c);
 
 //LIGAR CHAVES ESTRANGEIRAS E APAGA-LAS, POIS AGORA TEMOS A RELACAO
 MATCH (rl:RequisicaoDeLivro),(f:Funcionario) WHERE rl.IdFuncionario = f.Id CREATE (f)-[:RESPONSAVEL_POR]->(rl) REMOVE rl.IdFuncionario;
@@ -96,6 +96,7 @@ MATCH (rl:RequisicaoDeLivro),(u:Utilizador) WHERE rl.IdUtilizador = u.Id CREATE 
 
 MATCH (l:Livro),(g:Genero) WHERE l.IdGenero = g.Id CREATE (l)-[:GENERO_PRIMARIO]->(g) REMOVE l.IdGenero;
 
+Match (c:Copia),(l:Livro) where c.Id = l.Id create (c)-[r:COPIA]->(l);
 //LIGAR UTILIZADOR E SALA REQUISITADA DIRETAMENTE ATRAVES DE UMA RELACAO COM AS PROPRIADADES DA, AGORA APAGADA, TABALE RequisicaoDeSala
 MATCH (u:Utilizador),(rs:RequisicaoDeSala),(s:Sala)
 WHERE u.Id = rs.IdUtilizador AND rs.NumeroSala = s.Numero
