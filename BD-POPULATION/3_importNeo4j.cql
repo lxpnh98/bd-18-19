@@ -87,7 +87,7 @@ CREATE (l)-[:TEM_GENERO_SECUNDARIO]->(g);
 LOAD CSV WITH HEADERS FROM "file:///requisicaodelivrolivro.csv" AS reqDeLivroLivros
 MATCH (rl:RequisicaoDeLivro), (c:Copia)
 WHERE rl.Id = toInteger(reqDeLivroLivros.IdRequisicaoDeLivro) AND c.Id = toInteger(reqDeLivroLivros.IdLivro)
-CREATE (rl)-[:REQUISITA]->(c);
+CREATE (rl)-[:INCLUI]->(c);
 
 //LIGAR CHAVES ESTRANGEIRAS E APAGA-LAS, POIS AGORA TEMOS A RELACAO
 MATCH (rl:RequisicaoDeLivro),(f:Funcionario) WHERE rl.IdFuncionario = f.Id CREATE (f)-[:RESPONSAVEL_POR]->(rl) REMOVE rl.IdFuncionario;
