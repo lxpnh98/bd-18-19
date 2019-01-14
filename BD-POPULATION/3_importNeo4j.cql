@@ -23,7 +23,6 @@ set f = funcionarios,
 	f.Id = toInteger(funcionarios.Id);
 
 LOAD CSV WITH HEADERS FROM "file:///livro.csv" AS livros
-
 CREATE (c:Copia)
 SET c.Id = toInteger(livros.Id),
 	c.Edicao = toInteger(livros.Edicao),
@@ -31,8 +30,6 @@ SET c.Id = toInteger(livros.Id),
     c.Requisitado = case livros.Requisitado when "1" then true else false end,
     c.Titulo = livros.Titulo,
     c.Resumo = livros.Resumo
-
-
 WITH COLLECT(livros)[0] AS hardLivro, livros.Titulo AS lTitulo, livros.Resumo AS lResumo
 CREATE (l:Livro)
 SET l.Id = toInteger(hardLivro.Id),
@@ -99,7 +96,7 @@ MATCH (rl:RequisicaoDeLivro),(u:Utilizador) WHERE rl.IdUtilizador = u.Id CREATE 
 
 MATCH (l:Livro),(g:Genero) WHERE l.IdGenero = g.Id CREATE (l)-[:GENERO_PRIMARIO]->(g) REMOVE l.IdGenero;
 
-Match (c:Copia),(l:Livro) where c.Resumo = l.Resumo and c.Titulo = l.Resumo create (c)-[:COPIA]->(l) remove c.Titulo, c.Resumo;
+Match (c:Copia),(l:Livro) where c.Titulo = l.Titulo and c.Resumo = l.Resumo create (c)-[:COPIA]->(l) remove c.Titulo, c.Resumo;
 
 //LIGAR UTILIZADOR E SALA REQUISITADA DIRETAMENTE ATRAVES DE UMA RELACAO COM AS PROPRIADADES DA, AGORA APAGADA, TABALE RequisicaoDeSala
 MATCH (u:Utilizador),(rs:RequisicaoDeSala),(s:Sala)
