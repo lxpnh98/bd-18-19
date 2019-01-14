@@ -36,7 +36,7 @@ CREATE (c:Copia)
 SET c.Id = toInteger(livros.Id),
 	c.Edicao = toInteger(livros.Edicao),
     c.Estado = toInteger(livros.Estado),
-    c.Requisitado = case livros.Requisitado when "1" then true else false end
+    c.Requisitado = case livros.Requisitado when "1" then true else false end;
 
 LOAD CSV WITH HEADERS FROM "file:///autor.csv" AS autores
 CREATE (a:Autor)
